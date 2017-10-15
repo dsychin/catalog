@@ -13,7 +13,14 @@ class User(Base):
 
     id = Column(Integer, primary_key=True)
     username = Column(String(250), nullable=False)
-    # TODO: Password hash
+    email = Column(String(250), nullable=False)
+
+
+class Category(Base):
+    __tablename__ = 'category'
+
+    name = Column(String(80), nullable=False)
+    id = Column(Integer, primary_key=True)
 
 
 class Item(Base):
@@ -22,15 +29,10 @@ class Item(Base):
     name = Column(String(80), nullable=False)
     id = Column(Integer, primary_key=True)
     description = Column(String(250))
-    category_id = Column(Integer, ForeignKey('user.id'))
+    category_id = Column(Integer, ForeignKey('category.id'))
     category = relationship(Category)
-
-
-class Category(Base):
-    __tablename__ = 'category'
-
-    name = Column(String(80), nullable=False)
-    id = Column(Integer, primary_key=True)
+    created_by_id = Column(Integer, ForeignKey('user.id'))
+    created_by = relationship(User)
 
 
 engine = create_engine('sqlite:///itemcatalog.db')
