@@ -1,4 +1,6 @@
-from flask import Flask, render_template, Markup
+import random
+import string
+from flask import Flask, render_template, Markup, session as login_session
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from database_setup import Base, User, Category, Item
@@ -21,7 +23,11 @@ def home():
 
 @app.route('/login')
 def login():
-    return 'Login page'
+    state = ''.join(random.choice(string.ascii_uppercase + string.digits)
+                    for x in range(32))
+    print(state)
+    login_session['state'] = state
+    return "The current session state is %s" % login_session['state']
 
 
 @app.route('/catalog/category/<int:category_id>')
@@ -53,5 +59,6 @@ def item_delete(item_id):
 
 
 if __name__ == '__main__':
+    app.secret_key = 'super_secret_key'
     app.debug = True
     app.run(host='0.0.0.0', port=8000)
