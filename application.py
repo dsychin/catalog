@@ -1,4 +1,12 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, Markup
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
+from database_setup import Base, User, Category, Item
+
+engine = create_engine('sqlite:///itemcatalog.db')
+Base.metadata.bind = engine
+DBSession = sessionmaker(bind=engine)
+session = DBSession()
 
 app = Flask(__name__)
 app.url_map.strict_slashes = False
@@ -7,7 +15,8 @@ app.url_map.strict_slashes = False
 @app.route('/')
 @app.route('/catalog')
 def home():
-    return render_template('home.html')
+    categories = session.query(Category).all()
+    return render_template('home.html', categories=categories)
 
 
 @app.route('/login')
