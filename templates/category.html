@@ -1,0 +1,22 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/style.css') }}">
+    <title>Item Catalog</title>
+</head>
+<body>
+    <header>
+        <h1>Item Catalog</h1>
+    </header>
+    <main>
+        <h2>Category page</h2>
+        {% for item in items %}
+        <ul>
+            <li><a href="{{ url_for('item', item_id=item.id) }}">{{ item.name }}</a></li>
+        </ul>
+        {% endfor %}
+    </main>
+</body>
+</html>

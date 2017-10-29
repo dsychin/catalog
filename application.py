@@ -26,7 +26,8 @@ def login():
 
 @app.route('/catalog/category/<int:category_id>')
 def category(category_id):
-    return 'Category page for ' + str(category_id)
+    items = session.query(Item).filter(Item.id == category_id).all()
+    return render_template('category.html', items=items)
 
 
 @app.route('/catalog/item/<int:item_id>')
