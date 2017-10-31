@@ -36,13 +36,14 @@ def home():
 
 @app.route('/catalog/category/<int:category_id>')
 def category(category_id):
-    items = session.query(Item).filter(Item.id == category_id).all()
+    items = session.query(Item).filter(Item.category_id == category_id).all()
     return render_template('category.html', items=items)
 
 
 @app.route('/catalog/item/<int:item_id>')
 def item(item_id):
-    return 'Item page for ' + str(item_id)
+    item = session.query(Item).filter(Item.id == item_id).first()
+    return render_template('item.html', item=item)
 
 
 @app.route('/catalog/item/add')
