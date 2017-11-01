@@ -56,8 +56,9 @@ def item_add():
         session.add(item)
         session.commit()
         return redirect(url_for('home'))
-    categories = session.query(Category).all()
-    return render_template('add_item.html', categories=categories)
+    else:
+        categories = session.query(Category).all()
+        return render_template('add_item.html', categories=categories)
 
 
 @app.route('/catalog/item/<int:item_id>/edit')
