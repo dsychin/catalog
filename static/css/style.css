@@ -1,3 +1,7 @@
+* {
+    font-family: 'Open Sans', sans-serif;
+}
+
 body {
     max-width: 1000px;
     margin: auto;
@@ -13,5 +17,5 @@ body {
 }
 
 .container section {
-    width: 80%
+    width: 80%;
 }
