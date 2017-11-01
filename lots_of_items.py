@@ -16,7 +16,7 @@ for category in categories:
     session.add(data)
     session.commit()
 
-data = User(username='dsychin', email='chin.sy.des@gmail.com')
+data = User(name='Desmond Chin', email='chin.sy.des@gmail.com')
 session.add(data)
 session.commit()
 
