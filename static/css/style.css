@@ -2,3 +2,16 @@ body {
     max-width: 1000px;
     margin: auto;
 }
+
+.container {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.container nav {
+    width: 20%;
+}
+
+.container section {
+    width: 80%
+}

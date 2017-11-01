@@ -31,7 +31,8 @@ APPLICATION_NAME = "Item Catalog"
 @app.route('/catalog')
 def home():
     categories = session.query(Category).all()
-    return render_template('home.html', categories=categories)
+    items = session.query(Item).order_by(Item.id.desc()).limit(10)
+    return render_template('home.html', categories=categories, items=items)
 
 
 @app.route('/catalog/category/<int:category_id>')

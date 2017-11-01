@@ -1,4 +1,5 @@
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -6,17 +7,34 @@
     <link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/style.css') }}">
     <title>Item Catalog</title>
 </head>
+
 <body>
     <header>
         <h1>Item Catalog</h1>
     </header>
-    <main>
-        <h2>Home page</h2>
-        {% for category in categories %}
-        <ul>
-            <li><a href="{{ url_for('category', category_id=category.id) }}">{{ category.name }}</a></li>
-        </ul>
-        {% endfor %}
-    </main>
+    <h2>Home</h2>
+    <div class="container">
+        <nav>
+            <h3>Categories</h3>
+            <ul>
+                {% for category in categories %}
+                <li>
+                    <a href="{{ url_for('category', category_id=category.id) }}">{{ category.name }}</a>
+                </li>
+                {% endfor %}
+            </ul>
+        </nav>
+        <section>
+            <h3>Latest Items</h3>
+            <ul>
+                {% for item in items %}
+                <li>
+                    <a href="{{ url_for('item', item_id=item.id) }}">{{ item.name }}</a>
+                </li>
+                {% endfor %}
+            </ul>
+        </section>
+    </div>
 </body>
+
 </html>
