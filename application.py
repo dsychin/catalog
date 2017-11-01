@@ -5,7 +5,7 @@ import json
 import requests
 
 from flask import Flask, render_template, Markup, session as login_session, \
-                  make_response, request, flash
+    make_response, request, flash, redirect, url_for
 
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
@@ -47,9 +47,17 @@ def item(item_id):
     return render_template('item.html', item=item)
 
 
-@app.route('/catalog/item/add')
+@app.route('/catalog/item/add', methods=['GET', 'POST'])
 def item_add():
-    return 'Adding items page'
+    if request.method == 'POST':
+        item = Item(name=request.form['name'],
+                    description=request.form['description'],
+                    category_id=request.form['category_id'])
+        session.add(item)
+        session.commit()
+        return redirect(url_for('home'))
+    categories = session.query(Category).all()
+    return render_template('add_item.html', categories=categories)
 
 
 @app.route('/catalog/item/<int:item_id>/edit')
@@ -123,7 +131,7 @@ def gconnect():
     stored_gplus_id = login_session.get('gplus_id')
     if stored_access_token is not None and gplus_id == stored_gplus_id:
         response = make_response(json.dumps(
-                   'Current user is already connected.'), 200)
+            'Current user is already connected.'), 200)
         response.headers['Content-Type'] = 'application/json'
         return response
 
@@ -160,7 +168,8 @@ def gdisconnect():
     access_token = login_session.get('access_token')
     if access_token is None:
         print('Access Token is None')
-        response = make_response(json.dumps('Current user not connected.'), 401)
+        response = make_response(json.dumps(
+            'Current user not connected.'), 401)
         response.headers['Content-Type'] = 'application/json'
         return response
     print('In gdisconnect access token is %s', access_token)
@@ -181,7 +190,8 @@ def gdisconnect():
         response.headers['Content-Type'] = 'application/json'
         return response
     else:
-        response = make_response(json.dumps('Failed to revoke token for given user.', 400))
+        response = make_response(json.dumps(
+            'Failed to revoke token for given user.', 400))
         response.headers['Content-Type'] = 'application/json'
         return response
 
