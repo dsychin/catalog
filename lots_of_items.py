@@ -8,9 +8,8 @@ DBSession = sessionmaker(bind=engine)
 session = DBSession()
 
 
-categories = ['CPU', 'CPU Cooler', 'Motherboard', 'Memory', 'Storage',
-              'Video Card', 'Case', 'Power Supply', 'Optical Drive',
-              'Operating System', 'Monitor']
+categories = ['CPU', 'Motherboard', 'Memory', 'Storage',
+              'Video Card', 'Case', 'Power Supply']
 for category in categories:
     data = Category(name=category)
     session.add(data)
