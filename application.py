@@ -61,9 +61,15 @@ def item_add():
         return render_template('add_item.html', categories=categories)
 
 
-@app.route('/catalog/item/<int:item_id>/edit')
+@app.route('/catalog/item/<int:item_id>/edit', methods=['GET', 'POST'])
 def item_edit(item_id):
-    return 'Edit item id number ' + str(item_id)
+    if request.method == 'POST':
+        return redirect(url_for('home'))
+    else:
+        item = session.query(Item).filter(Item.id == item_id).first()
+        categories = session.query(Category).all()
+        return render_template('edit_item.html', categories=categories,
+                               item=item)
 
 
 @app.route('/catalog/item/<int:item_id>/delete')
