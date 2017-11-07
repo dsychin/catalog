@@ -80,9 +80,16 @@ def item_edit(item_id):
                                item=item)
 
 
-@app.route('/catalog/item/<int:item_id>/delete')
+@app.route('/catalog/item/<int:item_id>/delete', methods=['GET', 'POST'])
 def item_delete(item_id):
-    return 'Delete item id number ' + str(item_id)
+    if request.method == 'POST':
+        itemToDelete = session.query(Item).filter(Item.id == item_id).first()
+        session.delete(itemToDelete)
+        session.commit()
+        return redirect(url_for('home'))
+    else:
+        item = session.query(Item).filter(Item.id == item_id).first()
+        return render_template('delete_item.html', item=item)
 
 
 @app.route('/login')
