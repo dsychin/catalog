@@ -172,6 +172,15 @@ def gconnect():
     login_session['picture'] = data['picture']
     login_session['email'] = data['email']
 
+    # Check database if user exists
+    user = session.query(User) \
+                  .filter(User.email == login_session['email']).first()
+    if not user:
+        new_user = User(name=login_session['username'],
+                        email=login_session['email'])
+        session.add(new_user)
+        session.commit()
+
     # TODO: use templates
     output = ''
     output += '<h1>Welcome, '
@@ -180,8 +189,6 @@ def gconnect():
     output += '<img src="'
     output += login_session['picture']
     output += ' " style = "width: 300px; height: 300px;border-radius: 150px;-webkit-border-radius: 150px;-moz-border-radius: 150px;"> '
-    flash("you are now logged in as %s" % login_session['username'])
-    print("done!")
     return output
 
 
