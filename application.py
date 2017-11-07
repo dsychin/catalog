@@ -64,7 +64,15 @@ def item_add():
 @app.route('/catalog/item/<int:item_id>/edit', methods=['GET', 'POST'])
 def item_edit(item_id):
     if request.method == 'POST':
-        return redirect(url_for('home'))
+        # Get a copy of the item from the database, update it with the new
+        # values and commit it to the database.
+        item = session.query(Item).filter(Item.id == item_id).first()
+        item.name = request.form['name']
+        item.description = request.form['description']
+        item.category_id = request.form['category_id']
+        session.add(item)
+        session.commit()
+        return redirect(url_for('item', item_id=item_id))
     else:
         item = session.query(Item).filter(Item.id == item_id).first()
         categories = session.query(Category).all()
