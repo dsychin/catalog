@@ -49,6 +49,8 @@ def item(item_id):
 
 @app.route('/catalog/item/add', methods=['GET', 'POST'])
 def item_add():
+    if 'username' not in login_session:
+        return redirect(url_for('login'))
     if request.method == 'POST':
         item = Item(name=request.form['name'],
                     description=request.form['description'],
@@ -63,6 +65,8 @@ def item_add():
 
 @app.route('/catalog/item/<int:item_id>/edit', methods=['GET', 'POST'])
 def item_edit(item_id):
+    if 'username' not in login_session:
+        return redirect(url_for('login'))
     if request.method == 'POST':
         # Get a copy of the item from the database, update it with the new
         # values and commit it to the database.
@@ -82,6 +86,8 @@ def item_edit(item_id):
 
 @app.route('/catalog/item/<int:item_id>/delete', methods=['GET', 'POST'])
 def item_delete(item_id):
+    if 'username' not in login_session:
+        return redirect(url_for('login'))
     if request.method == 'POST':
         itemToDelete = session.query(Item).filter(Item.id == item_id).first()
         session.delete(itemToDelete)
