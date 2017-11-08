@@ -71,10 +71,12 @@ def item_add():
 def item_edit(item_id):
     if 'email' not in login_session:
         return redirect(url_for('login'))
+    item = session.query(Item).filter(Item.id == item_id).first()
+    if login_session['id'] != item.created_by_id:
+        return 'You do not have permission'
     if request.method == 'POST':
         # Get a copy of the item from the database, update it with the new
         # values and commit it to the database.
-        item = session.query(Item).filter(Item.id == item_id).first()
         item.name = request.form['name']
         item.description = request.form['description']
         item.category_id = request.form['category_id']
@@ -82,7 +84,6 @@ def item_edit(item_id):
         session.commit()
         return redirect(url_for('item', item_id=item_id))
     else:
-        item = session.query(Item).filter(Item.id == item_id).first()
         categories = session.query(Category).all()
         return render_template('edit_item.html', categories=categories,
                                item=item)
@@ -92,13 +93,14 @@ def item_edit(item_id):
 def item_delete(item_id):
     if 'email' not in login_session:
         return redirect(url_for('login'))
+    item = session.query(Item).filter(Item.id == item_id).first()
+    if login_session['id'] != item.created_by_id:
+        return 'You do not have permission'
     if request.method == 'POST':
-        itemToDelete = session.query(Item).filter(Item.id == item_id).first()
-        session.delete(itemToDelete)
+        session.delete(item)
         session.commit()
         return redirect(url_for('home'))
     else:
-        item = session.query(Item).filter(Item.id == item_id).first()
         return render_template('delete_item.html', item=item)
 
 
