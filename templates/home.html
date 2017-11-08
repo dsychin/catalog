@@ -35,6 +35,9 @@
             </ul>
         </nav>
         <section>
+            {% if login_session['username'] %}
+            <a href="{{ url_for('item_add') }}">Add Item</a>
+            {% endif %}
             <h3>Latest Items</h3>
             <ul>
                 {% for item in items %}
