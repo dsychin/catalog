@@ -5,7 +5,7 @@ import json
 import requests
 
 from flask import Flask, render_template, Markup, session as login_session, \
-    make_response, request, flash, redirect, url_for
+    make_response, request, flash, redirect, url_for, jsonify
 
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
@@ -224,7 +224,35 @@ def gdisconnect():
         response.headers['Content-Type'] = 'application/json'
         return response
 
-# TODO Add json endpoints
+# START JSON ENDPOINTS
+
+
+# Get list of categories
+@app.route('/catalog/categories/json')
+def categories_json():
+    categories = session.query(Category).all()
+    return jsonify(Categories=[i.serialize for i in categories])
+
+
+# Get list of items in a category
+@app.route('/catalog/category/<int:category_id>/json')
+def category_items_json(category_id):
+    items = session.query(Item).filter(Item.category_id == category_id).all()
+    return jsonify(Items=[i.serialize for i in items])
+
+
+# Get list of all items
+@app.route('/catalog/items/json')
+def all_items_json():
+    items = session.query(Item).all()
+    return jsonify(Items=[i.serialize for i in items])
+
+
+# Get single item by item id
+@app.route('/catalog/item/<int:item_id>/json')
+def item_json(item_id):
+    item = session.query(Item).filter(Item.id == item_id).first()
+    return jsonify(Item=item.serialize)
 
 
 if __name__ == '__main__':
