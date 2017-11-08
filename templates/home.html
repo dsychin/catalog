@@ -12,9 +12,15 @@
 <body>
     <header>
         <h1>Item Catalog</h1>
+        {% if not login_session['username'] %}
         <button>
             <a href="{{ url_for('login') }}">Login</a>
         </button>
+        {% else %}
+        <button>
+            <a href="{{ url_for('gdisconnect') }}">Logout</a>
+        </button>
+        {% endif %}
     </header>
     <h2>Home</h2>
     <div class="container">
