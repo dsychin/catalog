@@ -12,7 +12,7 @@
 <body>
     <header>
         <h1>Item Catalog</h1>
-        {% if not login_session['username'] %}
+        {% if not login_session['email'] %}
         <button>
             <a href="{{ url_for('login') }}">Login</a>
         </button>
@@ -35,7 +35,7 @@
             </ul>
         </nav>
         <section>
-            {% if login_session['username'] %}
+            {% if login_session['email'] %}
             <a href="{{ url_for('item_add') }}">Add Item</a>
             {% endif %}
             <h3>Latest Items</h3>

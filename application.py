@@ -56,18 +56,22 @@ def item_add():
     if request.method == 'POST':
         item = Item(name=request.form['name'],
                     description=request.form['description'],
-                    category_id=request.form['category_id'])
+                    category_id=request.form['category_id'],
+                    created_by_id=request.form['user_id'])
         session.add(item)
         session.commit()
         return redirect(url_for('home'))
     else:
         categories = session.query(Category).all()
-        return render_template('add_item.html', categories=categories)
+        user = session.query(User) \
+            .filter(User.email == login_session['email']).first()
+        return render_template('add_item.html', categories=categories,
+                               user=user)
 
 
 @app.route('/catalog/item/<int:item_id>/edit', methods=['GET', 'POST'])
 def item_edit(item_id):
-    if 'username' not in login_session:
+    if 'email' not in login_session:
         return redirect(url_for('login'))
     if request.method == 'POST':
         # Get a copy of the item from the database, update it with the new
@@ -88,7 +92,7 @@ def item_edit(item_id):
 
 @app.route('/catalog/item/<int:item_id>/delete', methods=['GET', 'POST'])
 def item_delete(item_id):
-    if 'username' not in login_session:
+    if 'email' not in login_session:
         return redirect(url_for('login'))
     if request.method == 'POST':
         itemToDelete = session.query(Item).filter(Item.id == item_id).first()
