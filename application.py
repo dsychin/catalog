@@ -63,10 +63,8 @@ def item_add():
         return redirect(url_for('home'))
     else:
         categories = session.query(Category).all()
-        user = session.query(User) \
-            .filter(User.email == login_session['email']).first()
         return render_template('add_item.html', categories=categories,
-                               user=user)
+                               login_session=login_session)
 
 
 @app.route('/catalog/item/<int:item_id>/edit', methods=['GET', 'POST'])
@@ -193,6 +191,13 @@ def gconnect():
         session.add(new_user)
         session.commit()
 
+        # Get updated information
+        user = session.query(User) \
+            .filter(User.email == login_session['email']).first()
+
+    # Add user id to session
+    login_session['id'] = user.id
+
     # TODO: use templates
     output = ''
     output += '<h1>Welcome, '
@@ -228,6 +233,7 @@ def gdisconnect():
         del login_session['username']
         del login_session['email']
         del login_session['picture']
+        del login_session['id']
         response = make_response(json.dumps('Successfully disconnected.'), 200)
         response.headers['Content-Type'] = 'application/json'
         return response
