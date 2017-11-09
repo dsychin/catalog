@@ -8,10 +8,11 @@ body {
 }
 
 #latest-item h3,
+#categories h3,
 #add-item {
     display: inline;
 }
 
-#latest-item div {
+.list-group {
     margin-top: 1em;
 }
