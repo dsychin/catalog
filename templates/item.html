@@ -4,18 +4,55 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+    <link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
     <title>Item Catalog | {{ item.name }}</title>
 </head>
 
 <body>
-    <h3>{{ item.name }}</h3>
-    <p>{{ item.description }}</p>
-    {% if login_session['email'] %}
-    <p>
-        <a href="{{ url_for('item_edit', item_id=item.id) }}">Edit</a>
-        <a href="{{ url_for('item_delete', item_id=item.id) }}">Delete</a>
-    </p>
-    {% endif %}
+    <header>
+        <nav class="navbar navbar-default">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="{{ url_for('home') }}">Item Catalog</a>
+                </div>
+                {% if not login_session['email'] %}
+                <a href="{{ url_for('login') }}" class="btn btn-default navbar-btn navbar-right">Login</a>
+                {% else %}
+                <a href="{{ url_for('gdisconnect') }}" class="btn btn-default navbar-btn navbar-right">Logout</a>
+                <p class="navbar-text navbar-right">Signed in as {{ login_session['username'] }}</p>
+                {% endif %}
+            </div>
+        </nav>
+    </header>
+    <div class="container-fluid">
+        <div class="row">
+            <div id="categories" class="col-xs-12 col-md-3">
+                <h3>Categories</h3>
+                <div class="list-group">
+                    {% for category in categories %}
+                    <a class="list-group-item" href="{{ url_for('category', category_id=category.id) }}">{{ category.name }}</a>
+                    {% endfor %}
+                </div>
+            </div>
+            <div id="latest-item" class="col-xs-12 col-md-9">
+                <h3>Item Details</h3>
+                <br>
+                <h4>{{ item.name }}</h4>
+                <p>
+                    <a href="{{ url_for('category', category_id=item_category.id) }}">{{ item_category.name }}</a>
+                </p>
+                <p>{{ item.description }}</p>
+                {% if login_session['email'] %}
+                <p>
+                    <a class="btn btn-default" href="{{ url_for('item_edit', item_id=item.id) }}">Edit</a>
+                    <a class="btn btn-danger" href="{{ url_for('item_delete', item_id=item.id) }}">Delete</a>
+                </p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
 </body>
 
 </html>
