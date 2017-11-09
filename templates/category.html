@@ -7,7 +7,7 @@
     <link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
     <link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/style.css') }}">
     <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
-    <title>Item Catalog | {{ category.name }}</title>
+    <title>Item Catalog | {{ this_category.name }}</title>
 </head>
 
 <body>
@@ -30,20 +30,42 @@
             </div>
         </nav>
     </header>
-    <main>
-        <h2>Category page</h2>
-        <ul>
-            {% for item in items %}
-            <li>
-                <a href="{{ url_for('item', item_id=item.id) }}">{{ item.name }}</a>
+    <div class="container-fluid">
+        <div class="row">
+            <div id="categories" class="col-xs-12 col-md-3">
+                <h3>Categories</h3>
+                <div class="list-group">
+                    {% for category in categories %}
+                    <a class="list-group-item" href="{{ url_for('category', category_id=category.id) }}">{{ category.name }}</a>
+                    {% endfor %}
+                </div>
+            </div>
+            <div id="items" class="col-xs-12 col-md-9">
+                <h3>{{ this_category.name }}</h3>
                 {% if login_session['email'] %}
-                <a href="{{ url_for('item_edit', item_id=item.id) }}">Edit</a>
-                <a href="{{ url_for('item_delete', item_id=item.id) }}">Delete</a>
+                <a id="add-item" class="btn btn-default" href="{{ url_for('item_add') }}">Add Item</a>
                 {% endif %}
-            </li>
-            {% endfor %}
-        </ul>
-    </main>
+                <br>
+                <table class="table">
+                    {% for item in items %}
+                    <tr>
+                        <td>
+                            <a href="{{ url_for('item', item_id=item.id) }}">{{ item.name }}</a>
+                        </td>
+                        {% if login_session['email'] %}
+                        <td>
+                            <a class="btn btn-default" href="{{ url_for('item_edit', item_id=item.id) }}">Edit</a>
+                        </td>
+                        <td>
+                            <a class="btn btn-danger" href="{{ url_for('item_delete', item_id=item.id) }}">Delete</a>
+                        </td>
+                        {% endif %}
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+    </div>
 </body>
 
 </html>

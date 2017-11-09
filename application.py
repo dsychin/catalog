@@ -41,8 +41,10 @@ def category(category_id):
     items = session.query(Item).filter(Item.category_id == category_id).all()
     category = session.query(Category).filter(
         Category.id == category_id).first()
-    return render_template('category.html', items=items, category=category,
-                           login_session=login_session)
+    categories = session.query(Category).all()
+    return render_template('category.html', items=items,
+                           this_category=category, login_session=login_session,
+                           categories=categories)
 
 
 @app.route('/catalog/item/<int:item_id>')
