@@ -45,11 +45,23 @@
                 {% if login_session['email'] %}
                 <a id="add-item" class="btn btn-default" href="{{ url_for('item_add') }}">Add Item</a>
                 {% endif %}
-                <div class="list-group">
+                <table class="table">
                     {% for item in items %}
-                    <a class="list-group-item" href="{{ url_for('item', item_id=item.id) }}">{{ item.name }}</a>
+                    <tr>
+                        <td>
+                            <a href="{{ url_for('item', item_id=item.id) }}">{{ item.name }}</a>
+                        </td>
+                        {% if login_session['email'] %}
+                        <td>
+                            <a class="btn btn-default" href="{{ url_for('item_edit', item_id=item.id) }}">Edit</a>
+                        </td>
+                        <td>
+                            <a class="btn btn-danger" href="{{ url_for('item_delete', item_id=item.id) }}">Delete</a>
+                        </td>
+                        {% endif %}
+                    </tr>
                     {% endfor %}
-                </div>
+                </table>
             </div>
         </div>
     </div>
