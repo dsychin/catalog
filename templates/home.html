@@ -26,31 +26,28 @@
             </div>
         </nav>
     </header>
-    <h2>Home</h2>
-    <div class="container">
-        <nav>
-            <h3>Categories</h3>
-            <ul>
-                {% for category in categories %}
-                <li>
-                    <a href="{{ url_for('category', category_id=category.id) }}">{{ category.name }}</a>
-                </li>
-                {% endfor %}
-            </ul>
-        </nav>
-        <section>
-            {% if login_session['email'] %}
-            <a href="{{ url_for('item_add') }}">Add Item</a>
-            {% endif %}
-            <h3>Latest Items</h3>
-            <ul>
-                {% for item in items %}
-                <li>
-                    <a href="{{ url_for('item', item_id=item.id) }}">{{ item.name }}</a>
-                </li>
-                {% endfor %}
-            </ul>
-        </section>
+    <div class="container-fluid">
+        <div class="row">
+            <div id="categories" class="col-xs-12 col-md-3">
+                <h3>Categories</h3>
+                <div class="list-group">
+                    {% for category in categories %}
+                    <a class="list-group-item" href="{{ url_for('category', category_id=category.id) }}">{{ category.name }}</a>
+                    {% endfor %}
+                </div>
+            </div>
+            <div id="latest-item" class="col-xs-12 col-md-9">
+                <h3>Latest Items</h3>
+                {% if login_session['email'] %}
+                <a id="add-item" class="btn btn-default" href="{{ url_for('item_add') }}">Add Item</a>
+                {% endif %}
+                <div class="list-group">
+                    {% for item in items %}
+                    <a class="list-group-item" href="{{ url_for('item', item_id=item.id) }}">{{ item.name }}</a>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
     </div>
 </body>
 
