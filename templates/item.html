@@ -14,15 +14,19 @@
     <header>
         <nav class="navbar navbar-default">
             <div class="container-fluid">
-                <div class="navbar-header">
-                    <a class="navbar-brand" href="{{ url_for('home') }}">Item Catalog</a>
+                <div class="row">
+                    <div class="navbar-header col-xs-4">
+                        <a class="navbar-brand" href="{{ url_for('home') }}">Item Catalog</a>
+                    </div>
+                    <div class="col-xs-8">
+                        {% if not login_session['email'] %}
+                        <a href="{{ url_for('login') }}" class="btn btn-default navbar-btn navbar-right">Login</a>
+                        {% else %}
+                        <a href="{{ url_for('gdisconnect') }}" class="btn btn-default navbar-btn navbar-right">Logout</a>
+                        <p class="navbar-text navbar-right">Signed in as {{ login_session['username'] }}</p>
+                        {% endif %}
+                    </div>
                 </div>
-                {% if not login_session['email'] %}
-                <a href="{{ url_for('login') }}" class="btn btn-default navbar-btn navbar-right">Login</a>
-                {% else %}
-                <a href="{{ url_for('gdisconnect') }}" class="btn btn-default navbar-btn navbar-right">Logout</a>
-                <p class="navbar-text navbar-right">Signed in as {{ login_session['username'] }}</p>
-                {% endif %}
             </div>
         </nav>
     </header>
