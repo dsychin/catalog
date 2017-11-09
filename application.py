@@ -110,7 +110,8 @@ def item_delete(item_id):
         session.commit()
         return redirect(url_for('home'))
     else:
-        return render_template('delete_item.html', item=item)
+        return render_template('delete_item.html', item=item,
+                               login_session=login_session)
 
 
 @app.route('/login')
