@@ -121,6 +121,7 @@ def login():
     return render_template('login.html', STATE=state)
 
 
+# Code for this route is from a Udacity course with some slight modifications.
 @app.route('/gconnect', methods=['POST'])
 def gconnect():
     # Validate state token
@@ -220,6 +221,7 @@ def gconnect():
     return output
 
 
+# Code for this route is from a Udacity course with some slight modifications.
 @app.route('/gdisconnect')
 def gdisconnect():
     access_token = login_session.get('access_token')
