@@ -212,14 +212,18 @@ def gconnect():
     # Add user id to session
     login_session['id'] = user.id
 
-    # TODO: use templates
     output = ''
-    output += '<h1>Welcome, '
-    output += login_session['username']
-    output += '!</h1>'
-    output += '<img src="'
-    output += login_session['picture']
-    output += ' " style = "width: 300px; height: 300px;border-radius: 150px;-webkit-border-radius: 150px;-moz-border-radius: 150px;"> '  # noqa
+    output += '<p>Welcome, {}. Redirecting you to homepage. Click '
+    output += '<a href="{{ url_for(\'home\') }}">here</a> if you are not '
+    output += 'redirecting.'
+    output = output.format(login_session['username'])
+    # output = ''
+    # output += '<h1>Welcome, '
+    # output += login_session['username']
+    # output += '!</h1>'
+    # output += '<img src="'
+    # output += login_session['picture']
+    # output += ' " style = "width: 300px; height: 300px;border-radius: 150px;-webkit-border-radius: 150px;-moz-border-radius: 150px;"> '  # noqa
     return output
 
 
@@ -249,9 +253,10 @@ def gdisconnect():
         del login_session['email']
         del login_session['picture']
         del login_session['id']
-        response = make_response(json.dumps('Successfully disconnected.'), 200)
-        response.headers['Content-Type'] = 'application/json'
-        return response
+        # response = make_response(json.dumps('Successfully disconnected.'), 200)
+        # response.headers['Content-Type'] = 'application/json'
+        # return response
+        return redirect(url_for('home'))
     else:
         response = make_response(json.dumps(
             'Failed to revoke token for given user.', 400))
