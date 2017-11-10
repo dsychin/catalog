@@ -15,6 +15,7 @@ from database_setup import Base, User, Category, Item
 from oauth2client.client import flow_from_clientsecrets
 from oauth2client.client import FlowExchangeError
 
+# Create sqlalchemy session
 engine = create_engine('sqlite:///itemcatalog.db')
 Base.metadata.bind = engine
 DBSession = sessionmaker(bind=engine)
@@ -23,11 +24,13 @@ session = DBSession()
 app = Flask(__name__)
 app.url_map.strict_slashes = False
 
+# Google credential client secret
 CLIENT_ID = json.loads(
     open('client_secrets.json', 'r').read())['web']['client_id']
 APPLICATION_NAME = "Item Catalog"
 
 
+# Homepage
 @app.route('/')
 @app.route('/catalog')
 def home():
@@ -37,6 +40,7 @@ def home():
                            login_session=login_session)
 
 
+# List items in a category
 @app.route('/catalog/category/<int:category_id>')
 def category(category_id):
     items = session.query(Item).filter(Item.category_id == category_id).all()
@@ -48,6 +52,7 @@ def category(category_id):
                            categories=categories)
 
 
+# Show details of an item
 @app.route('/catalog/item/<int:item_id>')
 def item(item_id):
     item = session.query(Item).filter(Item.id == item_id).first()
@@ -59,6 +64,8 @@ def item(item_id):
                            item_category=item_category)
 
 
+# GET requests returns a form to add a new item
+# POST requests processes the request and add a new item to the database
 @app.route('/catalog/item/add', methods=['GET', 'POST'])
 def item_add():
     if 'username' not in login_session:
@@ -77,6 +84,9 @@ def item_add():
                                login_session=login_session)
 
 
+# Similar to add item, but for editting item with the GET request
+# returning a form prefilled with existing data, and the POST request
+# updating an existing item in the database.
 @app.route('/catalog/item/<int:item_id>/edit', methods=['GET', 'POST'])
 def item_edit(item_id):
     if 'email' not in login_session:
@@ -99,6 +109,8 @@ def item_edit(item_id):
                                item=item, login_session=login_session)
 
 
+# GET shows a delete confirmation page for a specific item.
+# POST deletes the item from the database.
 @app.route('/catalog/item/<int:item_id>/delete', methods=['GET', 'POST'])
 def item_delete(item_id):
     if 'email' not in login_session:
@@ -115,6 +127,7 @@ def item_delete(item_id):
                                login_session=login_session)
 
 
+# Generate a state for the current session and show the login page.
 @app.route('/login')
 def login():
     state = ''.join(random.choice(string.ascii_uppercase + string.digits)
