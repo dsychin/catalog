@@ -7,7 +7,7 @@ catalog.
 
 ## Prerequisites
 1. [Python 3](https://www.python.org/)
-2. [Python Package Index (pip)](https://pypi.python.org/pypi/pip)
+2. [pip](https://pypi.python.org/pypi/pip)
 2. A modern web browser
 
 ## Installation
