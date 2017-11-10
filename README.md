@@ -21,3 +21,6 @@ catalog.
 
 ## Running the web server
 1. In your terminal run `python application.py`
+
+## Notes
+- Depending on how your Python is set up, you might have to run `python3` and `pip3` instead.
