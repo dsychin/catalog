@@ -2,8 +2,7 @@
 ## Description
 This project is one of Udacity's Full Stack Web Developer Nanodegree projects.
 This is a web application which shows items in an item catalog, it also allows 
-users to register and login using email or OAuth 2.0 and make changes to an item
-catalog.
+users to login Google Sign In and add or make changes to items in the catalog.
 
 ## Prerequisites
 1. [Python 3](https://www.python.org/)
