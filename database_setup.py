@@ -8,6 +8,7 @@ from sqlalchemy import create_engine
 Base = declarative_base()
 
 
+# User class stores user information
 class User(Base):
     __tablename__ = 'user'
 
@@ -16,6 +17,8 @@ class User(Base):
     email = Column(String(250), nullable=False)
 
 
+# Category table stores category names and has a serialize function to allow
+# data to be used by jsonify.
 class Category(Base):
     __tablename__ = 'category'
 
@@ -31,6 +34,8 @@ class Category(Base):
         }
 
 
+# Item table stores item details and has a serialize function to allow
+# data to be used by jsonify.
 class Item(Base):
     __tablename__ = 'item'
 
