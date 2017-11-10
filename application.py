@@ -96,7 +96,7 @@ def item_edit(item_id):
     else:
         categories = session.query(Category).all()
         return render_template('edit_item.html', categories=categories,
-                               item=item)
+                               item=item, login_session=login_session)
 
 
 @app.route('/catalog/item/<int:item_id>/delete', methods=['GET', 'POST'])
